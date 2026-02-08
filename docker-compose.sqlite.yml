@@ -1,0 +1,45 @@
+version: '3.8'
+
+# SIMPLER VERSION - Uses SQLite instead of SQL Server
+# This is more reliable and starts faster
+
+services:
+  # Backend API with SQLite
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: options-tracker-backend
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Data Source=/app/data/optionstracker.db
+      - UseInMemoryDatabase=false
+    ports:
+      - "5000:80"
+    volumes:
+      - backend_data:/app/data
+    networks:
+      - options-tracker-network
+    restart: unless-stopped
+
+  # Frontend React App
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    container_name: options-tracker-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - options-tracker-network
+    restart: unless-stopped
+
+volumes:
+  backend_data:
+
+networks:
+  options-tracker-network:
+    driver: bridge
