@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { positionsApi } from '../api/client';
 import type { Position } from '../types';
-import { formatCurrency, formatPercent, formatDate } from '../utils/formatters';
+import { formatCurrency, formatPercent } from '../utils/formatters';
 import { Link } from 'react-router-dom';
 
 export default function Positions() {

@@ -8,8 +8,11 @@ COPY package*.json ./
 # Install dependencies
 RUN npm ci
 
-# Copy source code
+# Copy source code and environment file
 COPY . .
+
+# Set build-time environment variable
+ENV VITE_API_URL=http://localhost:5000/api
 
 # Build the app
 RUN npm run build
